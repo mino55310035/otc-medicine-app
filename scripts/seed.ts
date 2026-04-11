@@ -19,7 +19,7 @@ type SeedMedicine = {
   document_text: string
   ingredients: { name: string; amount: string }[]
   contraindications: { type: 'banned' | 'caution'; condition: string; severity: 'high' | 'medium' | 'low' }[]
-  interactions: { interacting_with: string; description: string }[]
+  interactions: { interacting_with: string; description: string; type: 'banned' | 'caution' }[]
 }
 
 const medicines: SeedMedicine[] = [
@@ -41,9 +41,9 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '高齢者', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
-      { interacting_with: 'メトトレキサート', description: 'メトトレキサートの作用を増強するおそれがある' },
-      { interacting_with: 'リチウム製剤', description: 'リチウムの血中濃度を上昇させるおそれがある' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'メトトレキサート', description: 'メトトレキサートの作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'リチウム製剤', description: 'リチウムの血中濃度を上昇させるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -64,8 +64,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '胃・十二指腸潰瘍の既往', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
-      { interacting_with: 'メトトレキサート', description: 'メトトレキサートの排泄を遅延させるおそれがある' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'メトトレキサート', description: 'メトトレキサートの排泄を遅延させるおそれがある', type: 'banned' },
     ],
   },
   {
@@ -85,8 +85,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '高齢者', severity: 'low' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
-      { interacting_with: 'アルコール', description: '肝障害のリスクが高まる' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'アルコール', description: '肝障害のリスクが高まる', type: 'caution' },
     ],
   },
   {
@@ -107,8 +107,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '胃・十二指腸潰瘍の既往', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
-      { interacting_with: 'リチウム製剤', description: 'リチウムの血中濃度を上昇させるおそれがある' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'リチウム製剤', description: 'リチウムの血中濃度を上昇させるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -130,7 +130,7 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '眠気が出ることがある', severity: 'low' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
     ],
   },
 
@@ -160,8 +160,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '妊娠中', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'MAO阻害剤', description: '相互に作用を増強するおそれがある' },
-      { interacting_with: 'アルコール', description: '眠気・めまい等が増強されるおそれがある' },
+      { interacting_with: 'MAO阻害剤', description: '相互に作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'アルコール', description: '眠気・めまい等が増強されるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -188,8 +188,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '心臓病', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
-      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -213,8 +213,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '前立腺肥大', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある' },
-      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある' },
+      { interacting_with: 'ワーファリン', description: '抗凝血作用を増強するおそれがある', type: 'banned' },
+      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -237,8 +237,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '妊娠中', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'アルコール', description: '肝障害のリスクが高まる・眠気が増強される' },
-      { interacting_with: 'MAO阻害剤', description: '相互に作用を増強するおそれがある' },
+      { interacting_with: 'アルコール', description: '肝障害のリスクが高まる・眠気が増強される', type: 'caution' },
+      { interacting_with: 'MAO阻害剤', description: '相互に作用を増強するおそれがある', type: 'banned' },
     ],
   },
   {
@@ -258,8 +258,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '発汗傾向の著しい人', severity: 'low' },
     ],
     interactions: [
-      { interacting_with: 'エフェドリン含有製剤', description: '交感神経刺激作用が増強されるおそれがある（マオウ含有のため）' },
-      { interacting_with: 'カンゾウ含有製剤', description: '偽アルドステロン症のリスクが高まる' },
+      { interacting_with: 'エフェドリン含有製剤', description: '交感神経刺激作用が増強されるおそれがある（マオウ含有のため）', type: 'caution' },
+      { interacting_with: 'カンゾウ含有製剤', description: '偽アルドステロン症のリスクが高まる', type: 'caution' },
     ],
   },
 
@@ -281,7 +281,7 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '肝機能障害', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'アゾール系抗真菌薬', description: '抗真菌薬の吸収が低下するおそれがある' },
+      { interacting_with: 'アゾール系抗真菌薬', description: '抗真菌薬の吸収が低下するおそれがある', type: 'caution' },
     ],
   },
   {
@@ -307,8 +307,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '透析を受けている人', severity: 'high' },
     ],
     interactions: [
-      { interacting_with: 'テトラサイクリン系抗生物質', description: '抗生物質の吸収を低下させるおそれがある' },
-      { interacting_with: 'ニューキノロン系抗菌薬', description: '抗菌薬の吸収を低下させるおそれがある' },
+      { interacting_with: 'テトラサイクリン系抗生物質', description: '抗生物質の吸収を低下させるおそれがある', type: 'caution' },
+      { interacting_with: 'ニューキノロン系抗菌薬', description: '抗菌薬の吸収を低下させるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -329,7 +329,7 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '5歳未満の乳幼児', severity: 'high' },
     ],
     interactions: [
-      { interacting_with: 'カンゾウ含有製剤', description: '偽アルドステロン症のリスクが高まる' },
+      { interacting_with: 'カンゾウ含有製剤', description: '偽アルドステロン症のリスクが高まる', type: 'caution' },
     ],
   },
   {
@@ -364,7 +364,7 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '排尿困難', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: '抗コリン薬', description: '抗コリン作用が増強されるおそれがある' },
+      { interacting_with: '抗コリン薬', description: '抗コリン作用が増強されるおそれがある', type: 'caution' },
     ],
   },
 
@@ -384,8 +384,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '腎機能障害', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: '制酸剤（水酸化アルミニウム・水酸化マグネシウム）', description: 'フェキソフェナジンの吸収が低下するおそれがある' },
-      { interacting_with: 'エリスロマイシン', description: 'フェキソフェナジンの血中濃度が上昇するおそれがある' },
+      { interacting_with: '制酸剤（水酸化アルミニウム・水酸化マグネシウム）', description: 'フェキソフェナジンの吸収が低下するおそれがある', type: 'caution' },
+      { interacting_with: 'エリスロマイシン', description: 'フェキソフェナジンの血中濃度が上昇するおそれがある', type: 'caution' },
     ],
   },
   {
@@ -403,7 +403,7 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '肝機能障害', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある' },
+      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある', type: 'caution' },
     ],
   },
   {
@@ -429,8 +429,8 @@ const medicines: SeedMedicine[] = [
       { type: 'caution', condition: '前立腺肥大', severity: 'medium' },
     ],
     interactions: [
-      { interacting_with: 'MAO阻害剤', description: '血圧上昇のおそれがある' },
-      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある' },
+      { interacting_with: 'MAO阻害剤', description: '血圧上昇のおそれがある', type: 'banned' },
+      { interacting_with: 'アルコール', description: '眠気が増強されるおそれがある', type: 'caution' },
     ],
   },
 
@@ -471,6 +471,69 @@ const medicines: SeedMedicine[] = [
   },
 ]
 
+// ============================================================
+// シードデータ: 医療用医薬品（飲み合わせチェック用サンプル）
+// ※ 将来的には外部APIやフルDBに差し替え予定
+// ============================================================
+
+type SeedPrescription = {
+  name: string
+  name_kana: string
+  category: string
+  ingredients: string[]
+}
+
+const prescriptionMedicines: SeedPrescription[] = [
+  {
+    name: 'ワーファリン',
+    name_kana: 'わーふぁりん',
+    category: '抗凝血薬',
+    ingredients: ['ワルファリンカリウム'],
+  },
+  {
+    name: 'メトトレキサート',
+    name_kana: 'めとときさーと',
+    category: '抗リウマチ薬',
+    ingredients: ['メトトレキサート'],
+  },
+  {
+    name: 'リーマス',
+    name_kana: 'りーます',
+    category: '気分安定薬',
+    ingredients: ['炭酸リチウム'],
+  },
+  {
+    name: 'アムロジピン',
+    name_kana: 'あむろじぴん',
+    category: '降圧薬',
+    ingredients: ['アムロジピンベシル酸塩'],
+  },
+  {
+    name: 'ロキソニン錠60mg',
+    name_kana: 'ろきそにんじょう',
+    category: '消炎鎮痛薬',
+    ingredients: ['ロキソプロフェンナトリウム水和物'],
+  },
+  {
+    name: 'ムコスタ錠',
+    name_kana: 'むこすたじょう',
+    category: '胃炎・胃潰瘍治療薬',
+    ingredients: ['レバミピド'],
+  },
+  {
+    name: 'クラリス錠',
+    name_kana: 'くらりすじょう',
+    category: 'マクロライド系抗生物質',
+    ingredients: ['クラリスロマイシン'],
+  },
+  {
+    name: 'フロモックス錠',
+    name_kana: 'ふろもっくすじょう',
+    category: 'セフェム系抗生物質',
+    ingredients: ['セフカペンピボキシル塩酸塩水和物'],
+  },
+]
+
 async function seed() {
   console.log('シードデータの投入を開始します...')
 
@@ -480,6 +543,8 @@ async function seed() {
   await supabase.from('contraindications').delete().neq('id', '00000000-0000-0000-0000-000000000000')
   await supabase.from('ingredients').delete().neq('id', '00000000-0000-0000-0000-000000000000')
   await supabase.from('medicines').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+  await supabase.from('prescription_ingredients').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+  await supabase.from('prescription_medicines').delete().neq('id', '00000000-0000-0000-0000-000000000000')
   console.log('クリア完了')
 
   for (const med of medicines) {
@@ -535,6 +600,7 @@ async function seed() {
           medicine_id: medicineId,
           interacting_with: i.interacting_with,
           description: i.description,
+          type: i.type,
         }))
       )
       if (intError) console.error(`  飲み合わせエラー (${med.name}): ${intError.message}`)
@@ -543,7 +609,41 @@ async function seed() {
     console.log(`✓ ${med.name}`)
   }
 
-  console.log(`\n完了: ${medicines.length}件の薬品データを投入しました`)
+  console.log(`\n完了: ${medicines.length}件のOTC医薬品データを投入しました`)
+
+  // === 医療用医薬品の投入 ===
+  console.log('\n医療用医薬品の投入を開始します...')
+
+  for (const pm of prescriptionMedicines) {
+    const { data: inserted, error: pmError } = await supabase
+      .from('prescription_medicines')
+      .insert({
+        name: pm.name,
+        name_kana: pm.name_kana,
+        category: pm.category,
+      })
+      .select('id')
+      .single()
+
+    if (pmError || !inserted) {
+      console.error(`✗ [医療用] ${pm.name}: ${pmError?.message}`)
+      continue
+    }
+
+    if (pm.ingredients.length > 0) {
+      const { error: ingError } = await supabase.from('prescription_ingredients').insert(
+        pm.ingredients.map(name => ({
+          medicine_id: inserted.id,
+          name,
+        }))
+      )
+      if (ingError) console.error(`  成分エラー [医療用] (${pm.name}): ${ingError.message}`)
+    }
+
+    console.log(`✓ [医療用] ${pm.name}`)
+  }
+
+  console.log(`完了: ${prescriptionMedicines.length}件の医療用医薬品データを投入しました`)
 }
 
 seed().catch(console.error)

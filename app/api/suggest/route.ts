@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import type { HearingInput, Medicine } from '@/lib/types'
 
@@ -9,18 +9,42 @@ const anthropic = new Anthropic({
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createClient()
     const hearing: HearingInput = await req.json()
 
     // 禁忌・飲み合わせに引っかかる薬を除外
     const excludeIds: string[] = []
+    const cautionIds: string[] = []
 
     if (hearing.current_medicines.length > 0) {
+      // ユーザー入力を医療用医薬品テーブルで照合し、成分名も取得
+      const { data: matchedPrescriptions } = await supabase
+        .from('prescription_medicines')
+        .select('id, name, prescription_ingredients(name)')
+        .in('name', hearing.current_medicines)
+
+      // 照合できた薬名 + その成分名を合わせてチェック対象にする
+      const checkNames = [...hearing.current_medicines]
+      matchedPrescriptions?.forEach(pm => {
+        const ingredients = pm.prescription_ingredients as { name: string }[]
+        ingredients?.forEach(i => {
+          if (!checkNames.includes(i.name)) checkNames.push(i.name)
+        })
+      })
+
+      // OTCの飲み合わせテーブルで照合
       const { data: interactions } = await supabase
         .from('interactions')
-        .select('medicine_id')
-        .in('interacting_with', hearing.current_medicines)
+        .select('medicine_id, description, type')
+        .in('interacting_with', checkNames)
 
-      interactions?.forEach(i => excludeIds.push(i.medicine_id))
+      interactions?.forEach(i => {
+        if (i.type === 'banned') {
+          excludeIds.push(i.medicine_id)
+        } else {
+          cautionIds.push(i.medicine_id)
+        }
+      })
     }
 
     if (hearing.has_asthma || hearing.is_pregnant) {
@@ -89,7 +113,27 @@ ${documents}
 
     return NextResponse.json({ result })
 } catch (e) {
-    const message = e instanceof Error ? e.message : String(e)
-    return NextResponse.json({ error: message }, { status: 500 })
+    console.error('suggest API error:', e)
+
+    const errorMessage = e instanceof Error ? e.message : String(e)
+
+    if (errorMessage.includes('credit') || errorMessage.includes('balance')) {
+      return NextResponse.json(
+        { error: 'AI機能が一時的に利用できません。管理者にお問い合わせください。' },
+        { status: 503 }
+      )
+    }
+
+    if (errorMessage.includes('rate') || errorMessage.includes('429')) {
+      return NextResponse.json(
+        { error: 'リクエストが集中しています。しばらく待ってから再度お試しください。' },
+        { status: 429 }
+      )
+    }
+
+    return NextResponse.json(
+      { error: '提案の生成中にエラーが発生しました。しばらく待ってから再度お試しください。' },
+      { status: 500 }
+    )
   }
 }

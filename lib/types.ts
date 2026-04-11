@@ -40,6 +40,23 @@ export type Interaction = {
   medicine_id: string
   interacting_with: string
   description: string | null
+  type: ContraindicationType
+}
+
+// 医療用医薬品テーブル（飲み合わせチェック用）
+export type PrescriptionMedicine = {
+  id: string
+  name: string
+  name_kana: string | null
+  category: string | null
+  updated_at: string
+}
+
+// 医療用医薬品の成分テーブル
+export type PrescriptionIngredient = {
+  id: string
+  medicine_id: string
+  name: string
 }
 
 // ヒアリング情報（フロントから送る）
