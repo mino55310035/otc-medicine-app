@@ -28,7 +28,6 @@ jobs:
 
   # ジョブ2: build（lint が通ったら実行）
   build:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
