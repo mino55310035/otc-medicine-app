@@ -61,10 +61,57 @@ export async function POST(req: Request) {
       banned?.forEach(b => excludeIds.push(b.medicine_id))
     }
 
+    // 症状からOTCカテゴリを特定
+    const symptomToCategory: Record<string, string[]> = {
+      '頭痛': ['鎮痛・解熱'],
+      '生理痛': ['鎮痛・解熱'],
+      '腰痛': ['鎮痛・解熱'],
+      '肩こり': ['鎮痛・解熱', 'その他'],
+      '関節痛': ['鎮痛・解熱'],
+      '筋肉痛': ['鎮痛・解熱', 'その他'],
+      '歯痛': ['鎮痛・解熱'],
+      '発熱': ['鎮痛・解熱', '風邪薬'],
+      'のどの痛み': ['風邪薬'],
+      '咳': ['風邪薬'],
+      '鼻水': ['風邪薬', '鼻炎薬'],
+      '鼻づまり': ['風邪薬', '鼻炎薬'],
+      'たん': ['風邪薬'],
+      '悪寒': ['風邪薬'],
+      '胃痛': ['胃腸薬'],
+      '胃もたれ': ['胃腸薬'],
+      '下痢': ['胃腸薬'],
+      '便秘': ['胃腸薬'],
+      '吐き気': ['胃腸薬'],
+      '食欲不振': ['胃腸薬'],
+      '腹部膨満感': ['胃腸薬'],
+      '目のかゆみ': ['鼻炎薬'],
+      '目の疲れ': ['その他'],
+      '口内炎': ['その他'],
+      '耳痛': ['鎮痛・解熱'],
+      'くしゃみ': ['鼻炎薬'],
+      '花粉症': ['鼻炎薬'],
+      '蕁麻疹': ['鼻炎薬'],
+      '皮膚のかゆみ': ['鼻炎薬'],
+      '倦怠感': ['風邪薬', 'その他'],
+      '不眠': ['その他'],
+      '手足のしびれ': ['その他'],
+    }
+
+    const matchedCategories = new Set<string>()
+    hearing.symptoms.forEach(s => {
+      const categories = symptomToCategory[s]
+      if (categories) categories.forEach(c => matchedCategories.add(c))
+    })
+
     // 関連する薬を取得
     let query = supabase
       .from('medicines')
       .select('*')
+
+    // 選択式の症状がある場合はカテゴリで絞り込む
+    if (matchedCategories.size > 0) {
+      query = query.in('category', Array.from(matchedCategories))
+    }
 
     if (excludeIds.length > 0) {
       query = query.not('id', 'in', `(${excludeIds.join(',')})`)

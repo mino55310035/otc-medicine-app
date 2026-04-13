@@ -8,22 +8,32 @@ export default function LoginPage() {
   const [loginState, loginAction, loginPending] = useActionState(login, null)
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+    <div className="min-h-screen auth-gradient-bg flex items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            OTC医薬品 提案ツール
-          </h1>
-          <p className="text-sm text-zinc-500 mt-2">
-            ログインして利用を開始する
-          </p>
+        {/* Branding */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex">
+            <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">
+              OTC医薬品 提案ツール
+            </h1>
+            <p className="text-sm text-zinc-500 mt-2">
+              ログインして利用を開始する
+            </p>
+          </div>
         </div>
 
         {/* Google ログイン */}
         <form action={signInWithGoogle}>
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-3 rounded-xl bg-white py-3 text-sm font-semibold text-gray-900 hover:bg-zinc-100 transition-colors"
+            className="w-full flex items-center justify-center gap-3 rounded-xl bg-white py-3 text-sm font-semibold text-gray-900 hover:bg-zinc-100 transition-all duration-200 shadow-lg shadow-white/5"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -36,15 +46,15 @@ export default function LoginPage() {
         </form>
 
         <div className="flex items-center gap-3">
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           <span className="text-xs text-zinc-600">または</span>
-          <div className="flex-1 h-px bg-white/10" />
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </div>
 
         {/* メール + パスワード ログイン */}
         <form action={loginAction} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-1.5">
               メールアドレス
             </label>
             <input
@@ -52,12 +62,12 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50"
+              className="w-full rounded-xl bg-white/3 border border-white/6 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none input-glow"
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-zinc-400 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-zinc-400 mb-1.5">
               パスワード
             </label>
             <input
@@ -66,7 +76,7 @@ export default function LoginPage() {
               type="password"
               required
               minLength={6}
-              className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50"
+              className="w-full rounded-xl bg-white/3 border border-white/6 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none input-glow"
               placeholder="••••••••"
             />
           </div>
@@ -78,7 +88,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loginPending}
-            className="w-full rounded-xl bg-blue-500 py-3 text-sm font-semibold text-white hover:bg-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full rounded-xl btn-glow py-3 text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loginPending ? 'ログイン中...' : 'ログイン'}
           </button>
@@ -86,7 +96,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-zinc-500">
           アカウントをお持ちでない方は
-          <Link href="/signup" className="text-blue-400 hover:text-blue-300 ml-1">
+          <Link href="/signup" className="text-blue-400 hover:text-blue-300 ml-1 transition-colors">
             新規登録
           </Link>
         </p>

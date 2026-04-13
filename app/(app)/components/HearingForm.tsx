@@ -13,6 +13,8 @@ import ConfirmStep from './steps/ConfirmStep'
 
 const TOTAL_STEPS = 6
 
+const STEP_LABELS = ['症状', '時期', '服薬', 'アレルギー', '体質', '確認']
+
 export default function HearingForm() {
   const router = useRouter()
   const [step, setStep] = useState(1)
@@ -127,8 +129,15 @@ export default function HearingForm() {
   if (result) {
     return (
       <div className="space-y-6">
-        <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-6">
-          <h2 className="text-lg font-semibold text-emerald-400 mb-4">提案結果</h2>
+        <div className="result-glow rounded-2xl p-6">
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+              <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-semibold text-emerald-400">提案結果</h2>
+          </div>
           <div className="prose prose-invert prose-sm max-w-none
             prose-headings:text-emerald-300 prose-h2:text-base prose-h2:mt-6 prose-h2:mb-3 prose-h2:border-b prose-h2:border-emerald-500/20 prose-h2:pb-2
             prose-h3:text-sm prose-h3:mt-4 prose-h3:mb-2 prose-h3:text-zinc-200
@@ -143,7 +152,7 @@ export default function HearingForm() {
         </div>
         <button
           onClick={reset}
-          className="w-full rounded-xl bg-white/5 border border-white/10 py-3 text-sm font-semibold text-zinc-400 hover:bg-white/10 hover:text-zinc-200 transition-colors"
+          className="w-full rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
         >
           新しい相談をはじめる
         </button>
@@ -154,7 +163,6 @@ export default function HearingForm() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-8">
-        {/* パルスアニメーション付きアイコン */}
         <div className="relative">
           <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping" />
           <div className="relative w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
@@ -163,14 +171,10 @@ export default function HearingForm() {
             </svg>
           </div>
         </div>
-
-        {/* テキスト */}
         <div className="text-center space-y-2">
           <p className="text-sm font-medium text-zinc-200">AIが最適な薬を分析中です</p>
           <p className="text-xs text-zinc-500">症状や体質に合わせて提案を作成しています</p>
         </div>
-
-        {/* ドットアニメーション */}
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:0ms]" />
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:150ms]" />
@@ -188,7 +192,7 @@ export default function HearingForm() {
         </div>
         <button
           onClick={() => { setError(''); setStep(TOTAL_STEPS) }}
-          className="w-full rounded-xl bg-white/5 border border-white/10 py-3 text-sm font-semibold text-zinc-400 hover:bg-white/10 hover:text-zinc-200 transition-colors"
+          className="w-full rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
         >
           戻って修正する
         </button>
@@ -198,18 +202,23 @@ export default function HearingForm() {
 
   return (
     <div className="space-y-6">
-      {/* プログレスバー */}
-      <div className="flex items-center gap-1.5">
+      {/* ステップインジケーター */}
+      <div className="flex items-center gap-2">
         {Array.from({ length: TOTAL_STEPS }, (_, i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full transition-colors ${
-              i < step ? 'bg-blue-500' : 'bg-white/10'
-            }`}
-          />
+          <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
+            <div
+              className={`h-1 w-full rounded-full transition-all duration-500 ${
+                i < step ? 'progress-glow' : 'bg-white/6'
+              }`}
+            />
+            <span className={`text-[10px] transition-colors ${
+              i < step ? 'text-blue-400' : i === step - 1 ? 'text-zinc-400' : 'text-zinc-700'
+            }`}>
+              {STEP_LABELS[i]}
+            </span>
+          </div>
         ))}
       </div>
-      <p className="text-xs text-zinc-600 text-right">{step} / {TOTAL_STEPS}</p>
 
       {step === 1 && (
         <SymptomStep
@@ -271,7 +280,7 @@ export default function HearingForm() {
                 router.push('/')
               }
             }}
-            className="flex-1 rounded-xl bg-white/5 border border-white/10 py-3 text-sm font-semibold text-zinc-400 hover:bg-white/10 hover:text-zinc-200 transition-colors"
+            className="flex-1 rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
           >
             中止
           </button>
@@ -279,7 +288,7 @@ export default function HearingForm() {
           <button
             type="button"
             onClick={back}
-            className="flex-1 rounded-xl bg-white/5 border border-white/10 py-3 text-sm font-semibold text-zinc-400 hover:bg-white/10 hover:text-zinc-200 transition-colors"
+            className="flex-1 rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
           >
             戻る
           </button>
@@ -289,7 +298,7 @@ export default function HearingForm() {
             type="button"
             onClick={next}
             disabled={!canGoNext()}
-            className="flex-1 rounded-xl bg-blue-500 py-3 text-sm font-semibold text-white hover:bg-blue-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 rounded-xl btn-glow py-3.5 text-sm font-semibold text-white disabled:opacity-30 disabled:cursor-not-allowed"
           >
             次へ
           </button>
@@ -298,7 +307,7 @@ export default function HearingForm() {
             type="button"
             onClick={handleSubmit}
             disabled={loading}
-            className="flex-1 rounded-xl bg-blue-500 py-3 text-sm font-semibold text-white hover:bg-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 rounded-xl btn-glow py-3.5 text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? '提案を生成中...' : 'この内容で提案してもらう'}
           </button>

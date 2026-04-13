@@ -7,7 +7,7 @@ type Props = {
 
 export default function SinceStep({ since, onSelect }: Props) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <h2 className="text-lg font-semibold text-white">
         いつ頃から症状がありますか？
       </h2>
@@ -17,10 +17,10 @@ export default function SinceStep({ since, onSelect }: Props) {
             key={option}
             type="button"
             onClick={() => onSelect(option)}
-            className={`rounded-lg px-4 py-3 text-sm text-left border transition-colors ${
+            className={`rounded-xl px-4 py-3.5 text-sm text-left border transition-all duration-200 ${
               since === option
-                ? 'bg-blue-500 text-white border-blue-500'
-                : 'bg-white/5 text-zinc-400 border-white/10 hover:border-blue-500/50 hover:text-zinc-200'
+                ? 'bg-linear-to-r from-blue-500/15 to-indigo-500/10 text-white border-indigo-500/30 shadow-[0_0_12px_rgba(99,102,241,0.1)]'
+                : 'bg-white/3 text-zinc-400 border-white/6 hover:border-indigo-500/30 hover:text-zinc-200 hover:bg-white/5'
             }`}
           >
             {option}

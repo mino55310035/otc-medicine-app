@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #0a0a0a;
+  --background: #050510;
   --foreground: #ededed;
 }
 
@@ -17,4 +17,124 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Gradient background for app shell */
+.app-gradient-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139, 92, 246, 0.05), transparent),
+    linear-gradient(to bottom, #050510 0%, #0a0a1a 50%, #050510 100%);
+}
+
+/* Auth page gradient */
+.auth-gradient-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(59, 130, 246, 0.1), transparent),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(139, 92, 246, 0.06), transparent),
+    linear-gradient(to bottom, #050510, #0a0a1a);
+}
+
+/* Glowing button */
+.btn-glow {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 60px rgba(99, 102, 241, 0.1);
+  transition: all 0.3s ease;
+}
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), 0 0 80px rgba(99, 102, 241, 0.2);
+  transform: translateY(-1px);
+}
+.btn-glow:disabled {
+  box-shadow: none;
+  transform: none;
+}
+
+/* Animated progress bar gradient */
+.progress-glow {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Card with gradient border */
+.card-gradient {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.card-gradient:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Sidebar panel - distinctly lighter than main bg */
+.sidebar-panel {
+  background: linear-gradient(180deg, #0f1022 0%, #0c0c1d 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Header bar - solid dark with clear bottom edge */
+.header-bar {
+  background: rgba(12, 12, 28, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Input focus glow */
+.input-glow {
+  transition: all 0.2s ease;
+}
+.input-glow:focus {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), 0 0 20px rgba(99, 102, 241, 0.05);
+}
+
+/* Emerald glow card (for results) */
+.result-glow {
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  box-shadow: 0 4px 24px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(16, 185, 129, 0.05);
+}
+
+/* Sidebar active glow */
+.nav-active {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.1);
+}
+
+/* Tag pill selected */
+.pill-selected {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+}
+
+/* Subtle float animation for hero */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

@@ -18,9 +18,9 @@ export default function ConfirmStep({
   isPregnant,
 }: Props) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <h2 className="text-lg font-semibold text-white">入力内容の確認</h2>
-      <div className="rounded-2xl bg-white/5 border border-white/10 divide-y divide-white/10">
+      <div className="rounded-2xl card-gradient divide-y divide-white/6 overflow-hidden">
         <Row label="症状" value={symptoms.join('、')} />
         <Row label="発症時期" value={since || '未入力'} />
         <Row label="服用中の薬" value={currentMedicines.length > 0 ? currentMedicines.join('、') : 'なし'} />
@@ -35,7 +35,7 @@ export default function ConfirmStep({
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex justify-between px-4 py-3">
+    <div className="flex justify-between px-5 py-3.5">
       <span className="text-sm text-zinc-500">{label}</span>
       <span className="text-sm font-medium text-zinc-200">{value}</span>
     </div>

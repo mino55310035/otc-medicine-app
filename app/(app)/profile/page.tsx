@@ -48,17 +48,17 @@ export default function ProfilePage() {
       <form onSubmit={handleSave} className="space-y-6">
         {/* メールアドレス（変更不可） */}
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-1">
+          <label className="block text-sm font-medium text-zinc-400 mb-1.5">
             メールアドレス
           </label>
-          <p className="rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-zinc-500">
+          <p className="rounded-xl bg-white/3 border border-white/6 px-4 py-3 text-sm text-zinc-500">
             {user.email}
           </p>
         </div>
 
         {/* 表示名 */}
         <div>
-          <label htmlFor="displayName" className="block text-sm font-medium text-zinc-400 mb-1">
+          <label htmlFor="displayName" className="block text-sm font-medium text-zinc-400 mb-1.5">
             表示名
           </label>
           <input
@@ -67,26 +67,26 @@ export default function ProfilePage() {
             value={displayName}
             onChange={e => setDisplayName(e.target.value)}
             placeholder="例：田中太郎"
-            className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500/50"
+            className="w-full rounded-xl bg-white/3 border border-white/6 px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none input-glow"
           />
         </div>
 
         {/* 認証方法 */}
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-1">
+          <label className="block text-sm font-medium text-zinc-400 mb-1.5">
             認証方法
           </label>
-          <p className="rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-zinc-500">
+          <p className="rounded-xl bg-white/3 border border-white/6 px-4 py-3 text-sm text-zinc-500">
             {user.app_metadata?.provider === 'google' ? 'Google' : 'メール + パスワード'}
           </p>
         </div>
 
         {/* アカウント作成日 */}
         <div>
-          <label className="block text-sm font-medium text-zinc-400 mb-1">
+          <label className="block text-sm font-medium text-zinc-400 mb-1.5">
             アカウント作成日
           </label>
-          <p className="rounded-lg bg-white/5 border border-white/10 px-4 py-3 text-sm text-zinc-500">
+          <p className="rounded-xl bg-white/3 border border-white/6 px-4 py-3 text-sm text-zinc-500">
             {new Date(user.created_at).toLocaleDateString('ja-JP')}
           </p>
         </div>
@@ -101,14 +101,14 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={() => router.push('/')}
-            className="flex-1 rounded-xl bg-white/5 border border-white/10 py-3 text-sm font-semibold text-zinc-400 hover:bg-white/10 hover:text-zinc-200 transition-colors"
+            className="flex-1 rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
           >
             戻る
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="flex-1 rounded-xl bg-blue-500 py-3 text-sm font-semibold text-white hover:bg-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex-1 rounded-xl btn-glow py-3.5 text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? '保存中...' : '保存する'}
           </button>
