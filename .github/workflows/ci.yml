@@ -1,0 +1,42 @@
+# CI ワークフロー: push や PR のたびに自動で lint と build を実行する
+name: CI
+
+# いつ実行するか（トリガー）
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# 同じブランチで新しい実行が始まったら、古い実行をキャンセルする
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ジョブ: lint と build をまとめて実行
+  ci:
+    # どの OS で実行するか
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリのコードを取得
+      - uses: actions/checkout@v4
+
+      # 2. Node.js の環境をセットアップ
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3. 依存パッケージをインストール
+      - run: npm ci
+
+      # 4. lint を実行
+      - run: npm run lint
+
+      # 5. ビルドを実行
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
