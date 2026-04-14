@@ -25,6 +25,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npm run format:check
 
   # ジョブ2: test
   test:
@@ -38,7 +39,7 @@ jobs:
       - run: npm ci
       - run: npm test
 
-  # ジョブ3: build（lint が通ったら実行）
+  # ジョブ3: build
   build:
     runs-on: ubuntu-latest
     steps:
