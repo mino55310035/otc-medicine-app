@@ -1,13 +1,9 @@
-import Header from './components/Header'
-import Sidebar from './components/Sidebar'
-import MainContent from './components/MainContent'
-import { SidebarProvider } from './components/SidebarContext'
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import MainContent from './components/MainContent';
+import { SidebarProvider } from './components/SidebarContext';
 
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <div className="min-h-screen app-gradient-bg">
@@ -16,5 +12,5 @@ export default function AppLayout({
         <MainContent>{children}</MainContent>
       </div>
     </SidebarProvider>
-  )
+  );
 }

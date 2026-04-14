@@ -1,87 +1,87 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import ReactMarkdown from 'react-markdown'
-import type { AgeGroup, HearingInput } from '@/lib/types'
-import SymptomStep from './steps/SymptomStep'
-import SinceStep from './steps/SinceStep'
-import MedicineStep from './steps/MedicineStep'
-import AllergyStep from './steps/AllergyStep'
-import ProfileStep from './steps/ProfileStep'
-import ConfirmStep from './steps/ConfirmStep'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
+import type { AgeGroup, HearingInput } from '@/lib/types';
+import SymptomStep from './steps/SymptomStep';
+import SinceStep from './steps/SinceStep';
+import MedicineStep from './steps/MedicineStep';
+import AllergyStep from './steps/AllergyStep';
+import ProfileStep from './steps/ProfileStep';
+import ConfirmStep from './steps/ConfirmStep';
 
-const TOTAL_STEPS = 6
+const TOTAL_STEPS = 6;
 
-const STEP_LABELS = ['症状', '時期', '服薬', 'アレルギー', '体質', '確認']
+const STEP_LABELS = ['症状', '時期', '服薬', 'アレルギー', '体質', '確認'];
 
 export default function HearingForm() {
-  const router = useRouter()
-  const [step, setStep] = useState(1)
+  const router = useRouter();
+  const [step, setStep] = useState(1);
 
-  const [symptoms, setSymptoms] = useState<string[]>([])
-  const [customSymptom, setCustomSymptom] = useState('')
-  const [since, setSince] = useState('')
-  const [currentMedicines, setCurrentMedicines] = useState<string[]>([])
-  const [medicineInput, setMedicineInput] = useState('')
-  const [allergies, setAllergies] = useState<string[]>([])
-  const [allergyInput, setAllergyInput] = useState('')
-  const [hasAsthma, setHasAsthma] = useState(false)
-  const [ageGroup, setAgeGroup] = useState<AgeGroup>('成人')
-  const [isPregnant, setIsPregnant] = useState(false)
+  const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [customSymptom, setCustomSymptom] = useState('');
+  const [since, setSince] = useState('');
+  const [currentMedicines, setCurrentMedicines] = useState<string[]>([]);
+  const [medicineInput, setMedicineInput] = useState('');
+  const [allergies, setAllergies] = useState<string[]>([]);
+  const [allergyInput, setAllergyInput] = useState('');
+  const [hasAsthma, setHasAsthma] = useState(false);
+  const [ageGroup, setAgeGroup] = useState<AgeGroup>('成人');
+  const [isPregnant, setIsPregnant] = useState(false);
 
-  const [result, setResult] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   function toggleSymptom(symptom: string) {
-    setSymptoms(prev =>
+    setSymptoms((prev) =>
       prev.includes(symptom)
-        ? prev.filter(s => s !== symptom)
-        : [...prev, symptom]
-    )
+        ? prev.filter((s) => s !== symptom)
+        : [...prev, symptom],
+    );
   }
 
   function addCustomSymptom() {
-    const trimmed = customSymptom.trim()
+    const trimmed = customSymptom.trim();
     if (trimmed && !symptoms.includes(trimmed)) {
-      setSymptoms(prev => [...prev, trimmed])
-      setCustomSymptom('')
+      setSymptoms((prev) => [...prev, trimmed]);
+      setCustomSymptom('');
     }
   }
 
   function addMedicine() {
-    const trimmed = medicineInput.trim()
+    const trimmed = medicineInput.trim();
     if (trimmed && !currentMedicines.includes(trimmed)) {
-      setCurrentMedicines(prev => [...prev, trimmed])
-      setMedicineInput('')
+      setCurrentMedicines((prev) => [...prev, trimmed]);
+      setMedicineInput('');
     }
   }
 
   function addAllergy() {
-    const trimmed = allergyInput.trim()
+    const trimmed = allergyInput.trim();
     if (trimmed && !allergies.includes(trimmed)) {
-      setAllergies(prev => [...prev, trimmed])
-      setAllergyInput('')
+      setAllergies((prev) => [...prev, trimmed]);
+      setAllergyInput('');
     }
   }
 
   function canGoNext(): boolean {
-    if (step === 1) return symptoms.length > 0
-    return true
+    if (step === 1) return symptoms.length > 0;
+    return true;
   }
 
   function next() {
-    if (canGoNext() && step < TOTAL_STEPS) setStep(step + 1)
+    if (canGoNext() && step < TOTAL_STEPS) setStep(step + 1);
   }
 
   function back() {
-    if (step > 1) setStep(step - 1)
+    if (step > 1) setStep(step - 1);
   }
 
   async function handleSubmit() {
-    setError('')
-    setResult('')
+    setError('');
+    setResult('');
 
     const hearing: HearingInput = {
       symptoms,
@@ -91,39 +91,41 @@ export default function HearingForm() {
       has_asthma: hasAsthma,
       age_group: ageGroup,
       is_pregnant: isPregnant,
-    }
+    };
 
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await fetch('/api/suggest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(hearing),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || '提案の取得に失敗しました')
-      setResult(data.result)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || '提案の取得に失敗しました');
+      setResult(data.result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '予期しないエラーが発生しました')
+      setError(
+        err instanceof Error ? err.message : '予期しないエラーが発生しました',
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   function reset() {
-    setStep(1)
-    setSymptoms([])
-    setCustomSymptom('')
-    setSince('')
-    setCurrentMedicines([])
-    setMedicineInput('')
-    setAllergies([])
-    setAllergyInput('')
-    setHasAsthma(false)
-    setAgeGroup('成人')
-    setIsPregnant(false)
-    setResult('')
-    setError('')
+    setStep(1);
+    setSymptoms([]);
+    setCustomSymptom('');
+    setSince('');
+    setCurrentMedicines([]);
+    setMedicineInput('');
+    setAllergies([]);
+    setAllergyInput('');
+    setHasAsthma(false);
+    setAgeGroup('成人');
+    setIsPregnant(false);
+    setResult('');
+    setError('');
   }
 
   if (result) {
@@ -132,13 +134,24 @@ export default function HearingForm() {
         <div className="result-glow rounded-2xl p-6">
           <div className="flex items-center gap-2.5 mb-5">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center">
-              <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              <svg
+                className="w-4 h-4 text-emerald-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
               </svg>
             </div>
             <h2 className="text-lg font-semibold text-emerald-400">提案結果</h2>
           </div>
-          <div className="prose prose-invert prose-sm max-w-none
+          <div
+            className="prose prose-invert prose-sm max-w-none
             prose-headings:text-emerald-300 prose-h2:text-base prose-h2:mt-6 prose-h2:mb-3 prose-h2:border-b prose-h2:border-emerald-500/20 prose-h2:pb-2
             prose-h3:text-sm prose-h3:mt-4 prose-h3:mb-2 prose-h3:text-zinc-200
             prose-p:text-zinc-300 prose-p:leading-relaxed
@@ -146,7 +159,8 @@ export default function HearingForm() {
             prose-li:text-zinc-300 prose-li:leading-relaxed prose-ul:my-2 prose-li:my-0.5
             prose-li:marker:text-emerald-500/60
             prose-hr:border-emerald-500/20
-          ">
+          "
+          >
             <ReactMarkdown>{result}</ReactMarkdown>
           </div>
         </div>
@@ -157,7 +171,7 @@ export default function HearingForm() {
           新しい相談をはじめる
         </button>
       </div>
-    )
+    );
   }
 
   if (loading) {
@@ -166,14 +180,28 @@ export default function HearingForm() {
         <div className="relative">
           <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping" />
           <div className="relative w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-            <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+            <svg
+              className="w-8 h-8 text-emerald-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
+              />
             </svg>
           </div>
         </div>
         <div className="text-center space-y-2">
-          <p className="text-sm font-medium text-zinc-200">AIが最適な薬を分析中です</p>
-          <p className="text-xs text-zinc-500">症状や体質に合わせて提案を作成しています</p>
+          <p className="text-sm font-medium text-zinc-200">
+            AIが最適な薬を分析中です
+          </p>
+          <p className="text-xs text-zinc-500">
+            症状や体質に合わせて提案を作成しています
+          </p>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:0ms]" />
@@ -181,7 +209,7 @@ export default function HearingForm() {
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:300ms]" />
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -191,13 +219,16 @@ export default function HearingForm() {
           <p className="text-sm text-red-400">{error}</p>
         </div>
         <button
-          onClick={() => { setError(''); setStep(TOTAL_STEPS) }}
+          onClick={() => {
+            setError('');
+            setStep(TOTAL_STEPS);
+          }}
           className="w-full rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
         >
           戻って修正する
         </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -211,9 +242,15 @@ export default function HearingForm() {
                 i < step ? 'progress-glow' : 'bg-white/6'
               }`}
             />
-            <span className={`text-[10px] transition-colors ${
-              i < step ? 'text-blue-400' : i === step - 1 ? 'text-zinc-400' : 'text-zinc-700'
-            }`}>
+            <span
+              className={`text-[10px] transition-colors ${
+                i < step
+                  ? 'text-blue-400'
+                  : i === step - 1
+                    ? 'text-zinc-400'
+                    : 'text-zinc-700'
+              }`}
+            >
               {STEP_LABELS[i]}
             </span>
           </div>
@@ -236,7 +273,9 @@ export default function HearingForm() {
           input={medicineInput}
           onInputChange={setMedicineInput}
           onAdd={addMedicine}
-          onRemove={med => setCurrentMedicines(prev => prev.filter(m => m !== med))}
+          onRemove={(med) =>
+            setCurrentMedicines((prev) => prev.filter((m) => m !== med))
+          }
         />
       )}
       {step === 4 && (
@@ -245,7 +284,7 @@ export default function HearingForm() {
           input={allergyInput}
           onInputChange={setAllergyInput}
           onAdd={addAllergy}
-          onRemove={a => setAllergies(prev => prev.filter(x => x !== a))}
+          onRemove={(a) => setAllergies((prev) => prev.filter((x) => x !== a))}
         />
       )}
       {step === 5 && (
@@ -276,8 +315,10 @@ export default function HearingForm() {
           <button
             type="button"
             onClick={() => {
-              if (window.confirm('入力内容が破棄されます。相談を中止しますか？')) {
-                router.push('/')
+              if (
+                window.confirm('入力内容が破棄されます。相談を中止しますか？')
+              ) {
+                router.push('/');
               }
             }}
             className="flex-1 rounded-xl card-gradient py-3.5 text-sm font-semibold text-zinc-400 hover:text-zinc-200 transition-all duration-200"
@@ -314,5 +355,5 @@ export default function HearingForm() {
         )}
       </div>
     </div>
-  )
+  );
 }

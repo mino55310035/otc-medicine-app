@@ -1,9 +1,15 @@
-const SINCE_OPTIONS = ['今日', '昨日から', '2〜3日前から', '1週間くらい前から', 'それ以上前から']
+const SINCE_OPTIONS = [
+  '今日',
+  '昨日から',
+  '2〜3日前から',
+  '1週間くらい前から',
+  'それ以上前から',
+];
 
 type Props = {
-  since: string
-  onSelect: (value: string) => void
-}
+  since: string;
+  onSelect: (value: string) => void;
+};
 
 export default function SinceStep({ since, onSelect }: Props) {
   return (
@@ -12,7 +18,7 @@ export default function SinceStep({ since, onSelect }: Props) {
         いつ頃から症状がありますか？
       </h2>
       <div className="flex flex-col gap-2">
-        {SINCE_OPTIONS.map(option => (
+        {SINCE_OPTIONS.map((option) => (
           <button
             key={option}
             type="button"
@@ -28,5 +34,5 @@ export default function SinceStep({ since, onSelect }: Props) {
         ))}
       </div>
     </div>
-  )
+  );
 }

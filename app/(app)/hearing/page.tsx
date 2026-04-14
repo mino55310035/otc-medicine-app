@@ -1,5 +1,5 @@
-import HearingForm from '../components/HearingForm'
+import HearingForm from '../components/HearingForm';
 
 export default function HearingPage() {
-  return <HearingForm />
+  return <HearingForm />;
 }
