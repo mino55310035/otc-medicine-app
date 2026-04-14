@@ -1,32 +1,34 @@
-'use client'
+'use client';
 
-import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import type { User } from '@supabase/supabase-js'
-import { useSidebar } from './SidebarContext'
+import { createClient } from '@/lib/supabase/client';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import type { User } from '@supabase/supabase-js';
+import { useSidebar } from './SidebarContext';
 
 export default function Header() {
-  const router = useRouter()
-  const supabase = createClient()
-  const [user, setUser] = useState<User | null>(null)
-  const { open, toggle } = useSidebar()
+  const router = useRouter();
+  const supabase = createClient();
+  const [user, setUser] = useState<User | null>(null);
+  const { open, toggle } = useSidebar();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user)
-    })
-  }, [])
+      setUser(data.user);
+    });
+  }, []);
 
   async function handleLogout() {
-    await supabase.auth.signOut()
-    router.push('/login')
+    await supabase.auth.signOut();
+    router.push('/login');
   }
 
   return (
     <header className="sticky top-0 z-50 header-bar">
-      <div className={`px-6 py-3.5 flex items-center justify-between transition-[margin] duration-300 ease-in-out ${open ? 'ml-60' : 'ml-0'}`}>
+      <div
+        className={`px-6 py-3.5 flex items-center justify-between transition-[margin] duration-300 ease-in-out ${open ? 'ml-60' : 'ml-0'}`}
+      >
         {/* Toggle button */}
         <button
           onClick={toggle}
@@ -34,12 +36,32 @@ export default function Header() {
           aria-label={open ? 'サイドバーを閉じる' : 'サイドバーを開く'}
         >
           {open ? (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
+              />
             </svg>
           ) : (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"
+              />
             </svg>
           )}
         </button>
@@ -53,7 +75,9 @@ export default function Header() {
             >
               <div className="w-6 h-6 rounded-full bg-linear-to-br from-blue-500/20 to-indigo-500/20 border border-white/10 flex items-center justify-center shrink-0">
                 <span className="text-[10px] font-medium text-blue-400">
-                  {(user.user_metadata?.display_name || user.email || '?')[0].toUpperCase()}
+                  {(user.user_metadata?.display_name ||
+                    user.email ||
+                    '?')[0].toUpperCase()}
                 </span>
               </div>
               <span className="truncate">
@@ -72,5 +96,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

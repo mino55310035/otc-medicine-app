@@ -1,10 +1,10 @@
 type Props = {
-  medicines: string[]
-  input: string
-  onInputChange: (value: string) => void
-  onAdd: () => void
-  onRemove: (medicine: string) => void
-}
+  medicines: string[];
+  input: string;
+  onInputChange: (value: string) => void;
+  onAdd: () => void;
+  onRemove: (medicine: string) => void;
+};
 
 export default function MedicineStep({
   medicines,
@@ -22,11 +22,11 @@ export default function MedicineStep({
         <input
           type="text"
           value={input}
-          onChange={e => onInputChange(e.target.value)}
-          onKeyDown={e => {
+          onChange={(e) => onInputChange(e.target.value)}
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              e.preventDefault()
-              onAdd()
+              e.preventDefault();
+              onAdd();
             }
           }}
           placeholder="薬の名前を入力"
@@ -43,7 +43,7 @@ export default function MedicineStep({
       </div>
       {medicines.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {medicines.map(med => (
+          {medicines.map((med) => (
             <span
               key={med}
               className="inline-flex items-center gap-1 rounded-full pill-selected text-white px-3 py-1.5 text-sm"
@@ -60,7 +60,9 @@ export default function MedicineStep({
           ))}
         </div>
       )}
-      <p className="text-xs text-zinc-600">なければそのまま次へ進んでください</p>
+      <p className="text-xs text-zinc-600">
+        なければそのまま次へ進んでください
+      </p>
     </div>
-  )
+  );
 }

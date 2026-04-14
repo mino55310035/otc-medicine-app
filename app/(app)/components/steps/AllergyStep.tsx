@@ -1,10 +1,10 @@
 type Props = {
-  allergies: string[]
-  input: string
-  onInputChange: (value: string) => void
-  onAdd: () => void
-  onRemove: (allergy: string) => void
-}
+  allergies: string[];
+  input: string;
+  onInputChange: (value: string) => void;
+  onAdd: () => void;
+  onRemove: (allergy: string) => void;
+};
 
 export default function AllergyStep({
   allergies,
@@ -22,11 +22,11 @@ export default function AllergyStep({
         <input
           type="text"
           value={input}
-          onChange={e => onInputChange(e.target.value)}
-          onKeyDown={e => {
+          onChange={(e) => onInputChange(e.target.value)}
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              e.preventDefault()
-              onAdd()
+              e.preventDefault();
+              onAdd();
             }
           }}
           placeholder="アレルギーのある薬や成分を入力"
@@ -43,7 +43,7 @@ export default function AllergyStep({
       </div>
       {allergies.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {allergies.map(a => (
+          {allergies.map((a) => (
             <span
               key={a}
               className="inline-flex items-center gap-1 rounded-full pill-selected text-white px-3 py-1.5 text-sm"
@@ -60,7 +60,9 @@ export default function AllergyStep({
           ))}
         </div>
       )}
-      <p className="text-xs text-zinc-600">なければそのまま次へ進んでください</p>
+      <p className="text-xs text-zinc-600">
+        なければそのまま次へ進んでください
+      </p>
     </div>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
 type SymptomCategory = {
-  label: string
-  symptoms: string[]
-}
+  label: string;
+  symptoms: string[];
+};
 
 const SYMPTOM_CATEGORIES: SymptomCategory[] = [
   {
@@ -18,7 +18,15 @@ const SYMPTOM_CATEGORIES: SymptomCategory[] = [
   },
   {
     label: '胃腸',
-    symptoms: ['胃痛', '胃もたれ', '下痢', '便秘', '吐き気', '食欲不振', '腹部膨満感'],
+    symptoms: [
+      '胃痛',
+      '胃もたれ',
+      '下痢',
+      '便秘',
+      '吐き気',
+      '食欲不振',
+      '腹部膨満感',
+    ],
   },
   {
     label: '目・耳・口',
@@ -32,17 +40,17 @@ const SYMPTOM_CATEGORIES: SymptomCategory[] = [
     label: 'その他',
     symptoms: ['倦怠感', '不眠', '手足のしびれ'],
   },
-]
+];
 
-const ALL_SYMPTOMS = SYMPTOM_CATEGORIES.flatMap(c => c.symptoms)
+const ALL_SYMPTOMS = SYMPTOM_CATEGORIES.flatMap((c) => c.symptoms);
 
 type Props = {
-  symptoms: string[]
-  customSymptom: string
-  onToggle: (symptom: string) => void
-  onCustomChange: (value: string) => void
-  onAddCustom: () => void
-}
+  symptoms: string[];
+  customSymptom: string;
+  onToggle: (symptom: string) => void;
+  onCustomChange: (value: string) => void;
+  onAddCustom: () => void;
+};
 
 export default function SymptomStep({
   symptoms,
@@ -51,18 +59,18 @@ export default function SymptomStep({
   onCustomChange,
   onAddCustom,
 }: Props) {
-  const [openCategories, setOpenCategories] = useState<Set<string>>(new Set())
+  const [openCategories, setOpenCategories] = useState<Set<string>>(new Set());
 
   function toggleCategory(label: string) {
-    setOpenCategories(prev => {
-      const next = new Set(prev)
+    setOpenCategories((prev) => {
+      const next = new Set(prev);
       if (next.has(label)) {
-        next.delete(label)
+        next.delete(label);
       } else {
-        next.add(label)
+        next.add(label);
       }
-      return next
-    })
+      return next;
+    });
   }
 
   return (
@@ -72,19 +80,26 @@ export default function SymptomStep({
       </h2>
 
       <div className="space-y-2">
-        {SYMPTOM_CATEGORIES.map(category => {
-          const isOpen = openCategories.has(category.label)
-          const selectedCount = category.symptoms.filter(s => symptoms.includes(s)).length
+        {SYMPTOM_CATEGORIES.map((category) => {
+          const isOpen = openCategories.has(category.label);
+          const selectedCount = category.symptoms.filter((s) =>
+            symptoms.includes(s),
+          ).length;
 
           return (
-            <div key={category.label} className="rounded-xl border border-white/6 overflow-hidden">
+            <div
+              key={category.label}
+              className="rounded-xl border border-white/6 overflow-hidden"
+            >
               <button
                 type="button"
                 onClick={() => toggleCategory(category.label)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-white/3 hover:bg-white/5 transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <span className="text-sm font-medium text-zinc-200">{category.label}</span>
+                  <span className="text-sm font-medium text-zinc-200">
+                    {category.label}
+                  </span>
                   {selectedCount > 0 && (
                     <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
                       {selectedCount}
@@ -98,13 +113,17 @@ export default function SymptomStep({
                   stroke="currentColor"
                   strokeWidth={2}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
                 </svg>
               </button>
 
               {isOpen && (
                 <div className="px-4 py-3 flex flex-wrap gap-2">
-                  {category.symptoms.map(symptom => (
+                  {category.symptoms.map((symptom) => (
                     <button
                       key={symptom}
                       type="button"
@@ -121,7 +140,7 @@ export default function SymptomStep({
                 </div>
               )}
             </div>
-          )
+          );
         })}
       </div>
 
@@ -130,11 +149,11 @@ export default function SymptomStep({
         <input
           type="text"
           value={customSymptom}
-          onChange={e => onCustomChange(e.target.value)}
-          onKeyDown={e => {
+          onChange={(e) => onCustomChange(e.target.value)}
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              e.preventDefault()
-              onAddCustom()
+              e.preventDefault();
+              onAddCustom();
             }
           }}
           placeholder="その他の症状を入力"
@@ -150,21 +169,27 @@ export default function SymptomStep({
       </div>
 
       {/* 自由入力で追加した症状 */}
-      {symptoms.filter(s => !ALL_SYMPTOMS.includes(s)).length > 0 && (
+      {symptoms.filter((s) => !ALL_SYMPTOMS.includes(s)).length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {symptoms.filter(s => !ALL_SYMPTOMS.includes(s)).map(s => (
-            <span
-              key={s}
-              className="inline-flex items-center gap-1 rounded-full pill-selected text-white px-3 py-1.5 text-sm"
-            >
-              {s}
-              <button type="button" onClick={() => onToggle(s)} className="hover:text-blue-200 ml-0.5">
-                ×
-              </button>
-            </span>
-          ))}
+          {symptoms
+            .filter((s) => !ALL_SYMPTOMS.includes(s))
+            .map((s) => (
+              <span
+                key={s}
+                className="inline-flex items-center gap-1 rounded-full pill-selected text-white px-3 py-1.5 text-sm"
+              >
+                {s}
+                <button
+                  type="button"
+                  onClick={() => onToggle(s)}
+                  className="hover:text-blue-200 ml-0.5"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
         </div>
       )}
     </div>
-  )
+  );
 }
